@@ -9,6 +9,14 @@ class Carbase:
         t = self.photo_le_name.find('.')
         return self.photo_le_name[t:]
 
+    def car_type(self):
+        if self.car_type == 'car':
+            return Car
+        if self.car_type == 'truck':
+            return Truck
+        else:
+            return Specmachine
+
 class Car(Carbase):
     def __init__(self,car_type, photo_le_name, brand, carrying, passenger_seats_count):
         super().__init__(self,car_type, photo_le_name, brand, carrying)
@@ -43,12 +51,11 @@ def get_car_list(filename):
     car_list = []
     with open(filename) as f:
         for line in f:
-            s = line.find(';')
-            if line[:s] != '':
-                car_list.append(line[:s])
+            Carbase(line.split(';'))
     return car_list
 
 def main():
-
+    print(get_car_list('solution.txt'))
+    return get_car_list('solution.txt')
 if __name__ == '__main__':
     main()

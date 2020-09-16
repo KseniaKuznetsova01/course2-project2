@@ -1,1 +1,2 @@
-filename = 'solution.txt'
+print(get_car_list('solution.txt'))
+
