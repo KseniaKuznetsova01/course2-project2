@@ -9,22 +9,14 @@ class Carbase:
         t = self.photo_le_name.find('.')
         return self.photo_le_name[t:]
 
-    def car_type(self):
-        if self.car_type == 'car':
-            return Car
-        if self.car_type == 'truck':
-            return Truck
-        else:
-            return Specmachine
-
 class Car(Carbase):
-    def __init__(self,car_type, photo_le_name, brand, carrying, passenger_seats_count):
-        super().__init__(self,car_type, photo_le_name, brand, carrying)
+    def __init__(self,car_type, photo_le_name, brand, carrying, passenger_seats_count = None, size = None, extra = None):
+        super().__init__(car_type, photo_le_name, brand, carrying)
         self.passenger_seats_count = passenger_seats_count
 
 class Truck(Carbase):
-    def __init__(self,car_type, photo_le_name, brand, carrying, size):
-        super().__init__(self, car_type, photo_le_name, brand, carrying)
+    def __init__(self,car_type, photo_le_name, brand, carrying,passenger_seats_count = None, size = None, extra = None):
+        super().__init__(car_type, photo_le_name, brand, carrying)
         self.size = size
         self.body_width = 0.0
         self.body_height = 0.0
@@ -42,8 +34,8 @@ class Truck(Carbase):
 
 
 class Specmachine(Carbase):
-    def __init__(self,car_type, photo_le_name, brand, carrying, extra):
-        super().__init__(self, car_type, photo_le_name, brand, carrying)
+    def __init__(self,car_type, photo_le_name, brand, carrying,passenger_seats_count = None, size = None, extra= None):
+        super().__init__(car_type, photo_le_name, brand, carrying)
         self.extra = extra
 
 
@@ -51,11 +43,22 @@ def get_car_list(filename):
     car_list = []
     with open(filename) as f:
         for line in f:
-            Carbase(line.split(';'))
+            first = line.find(';')
+
+            if line[:first] == 'car':
+                car_list.append(Car(*line.split(';')))
+            elif line[:first] == 'truck':
+                car_list.append(Truck(*line.split(';')))
+            elif line[:first] == 'spec_machine':
+                car_list.append(Specmachine(*line.split(';')))
+            else:
+                continue
+
     return car_list
 
+
 def main():
-    print(get_car_list('solution.txt'))
-    return get_car_list('solution.txt')
+    get_car_list('solution.txt')
+
 if __name__ == '__main__':
     main()
